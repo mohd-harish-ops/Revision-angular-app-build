@@ -1,0 +1,15 @@
+<header class="navbar">
+  <div class="container navbar-inner">
+    <span class="brand">Job<span>Tracker</span></span>
+    <nav class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/applications" routerLinkActive="active">Applications</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container page">
+  <router-outlet />
+</main>
+
+<footer class="footer">Built with Angular</footer>

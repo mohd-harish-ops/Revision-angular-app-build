@@ -1,0 +1,55 @@
+<h1 class="title">Applications</h1>
+
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+  <h3>Add application</h3>
+  <div class="form-grid">
+    <input formControlName="company" placeholder="Company" />
+    <input formControlName="role" placeholder="Role (e.g. Cloud Intern)" />
+    <select formControlName="status">
+      @for (s of statuses; track s) {
+        <option [value]="s">{{ s }}</option>
+      }
+    </select>
+    <input type="date" formControlName="date" />
+    <input formControlName="notes" placeholder="Notes (optional)" />
+    <button class="btn" type="submit">Add</button>
+  </div>
+  @if (form.touched && form.invalid) {
+    <p class="error">Company aur role dono zaruri hain.</p>
+  }
+</form>
+
+<section class="card" style="margin-top: 1.2rem">
+  <div class="toolbar">
+    <input #q placeholder="Search company ya role..." (input)="query.set(q.value)" />
+    <div class="filters">
+      @for (f of filters; track f) {
+        <button type="button" [class.active]="filter() === f" (click)="filter.set(f)">{{ f }}</button>
+      }
+    </div>
+  </div>
+
+  @if (filtered().length === 0) {
+    <p class="empty">Koi application nahi mili.</p>
+  } @else {
+    <ul class="list">
+      @for (a of filtered(); track a.id) {
+        <li class="row">
+          <div class="row-main">
+            <strong>{{ a.company }}</strong>
+            <span class="muted">{{ a.role }} · {{ a.date | date: 'd MMM y' }}</span>
+            @if (a.notes) {
+              <span class="muted">{{ a.notes }}</span>
+            }
+          </div>
+          <select class="status-select" [attr.data-status]="a.status" #sel (change)="changeStatus(a.id, sel.value)">
+            @for (s of statuses; track s) {
+              <option [value]="s" [selected]="s === a.status">{{ s }}</option>
+            }
+          </select>
+          <button type="button" class="icon-btn" (click)="remove(a.id)" [attr.aria-label]="'Delete ' + a.company">✕</button>
+        </li>
+      }
+    </ul>
+  }
+</section>

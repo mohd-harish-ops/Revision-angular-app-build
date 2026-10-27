@@ -1,0 +1,34 @@
+<h1 class="title">Dashboard</h1>
+
+<div class="grid">
+  <div class="card">
+    <p class="label">Total applications</p>
+    <p class="big">{{ service.total() }}</p>
+  </div>
+  @for (s of statuses; track s) {
+    <div class="card">
+      <p class="label">{{ s }}</p>
+      <p class="big" [attr.data-status]="s">{{ service.counts()[s] }}</p>
+    </div>
+  }
+</div>
+
+<section class="card">
+  <h3>Recent applications</h3>
+  @if (recent().length === 0) {
+    <p class="empty">Abhi koi application nahi hai. <a routerLink="/applications">Pehli application add karo</a></p>
+  } @else {
+    <ul class="list">
+      @for (a of recent(); track a.id) {
+        <li class="row">
+          <div class="row-main">
+            <strong>{{ a.company }}</strong>
+            <span class="muted">{{ a.role }} · {{ a.date | date: 'd MMM y' }}</span>
+          </div>
+          <span class="badge" [attr.data-status]="a.status">{{ a.status }}</span>
+        </li>
+      }
+    </ul>
+    <p><a routerLink="/applications">Sab dekho &rarr;</a></p>
+  }
+</section>
